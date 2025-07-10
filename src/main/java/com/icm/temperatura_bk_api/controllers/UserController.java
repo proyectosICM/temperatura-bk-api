@@ -1,0 +1,79 @@
+package com.icm.temperatura_bk_api.controllers;
+
+import com.icm.temperatura_bk_api.models.UserModel;
+import com.icm.temperatura_bk_api.services.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
+public class UserController {
+    private final UserService userService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserModel> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserModel>> getAllUsers() {
+        List<UserModel> users = userService.getAllUsers();
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<UserModel>> getAllUsersPaginated(@RequestParam(defaultValue = "0") int page,
+                                                                @RequestParam(defaultValue = "10") int size) {
+        Page<UserModel> users = userService.getAllUsersPaginated(page, size);
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/by-company/{companyId}")
+    public ResponseEntity<List<UserModel>> getUsersByCompanyId(@PathVariable Long companyId) {
+        List<UserModel> users = userService.getUsersByCompanyId(companyId);
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/by-company-paginated/{companyId}")
+    public ResponseEntity<Page<UserModel>> getUsersByCompanyIdPaginated(@PathVariable Long companyId,
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size){
+        Page<UserModel> users = userService.getUsersByCompanyId(companyId, page, size);
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
+    @PostMapping
+    public ResponseEntity<UserModel> createUser(@RequestBody UserModel user) {
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserModel> updateUser(@PathVariable Long id,
+                                @RequestBody UserModel user) {
+        UserModel updated =  userService.updateUser(id, user);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updated);
+    }
+}
