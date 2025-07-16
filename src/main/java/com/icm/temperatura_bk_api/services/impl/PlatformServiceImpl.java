@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PlatformServiceImpl implements PlatformService {
-    private PlatformRepository platformRepository;
+    private final PlatformRepository platformRepository;
 
     @Override
     public Optional<PlatformModel> getLaneById(Long id) {
