@@ -27,6 +27,9 @@ public class PlatformController {
     @GetMapping
     public ResponseEntity<List<PlatformModel>> getAllLanes() {
         List<PlatformModel> platforms = platformService.getAllLanes();
+        if (platforms.isEmpty()){
+            ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(platforms);
     }
 
