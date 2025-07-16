@@ -37,7 +37,7 @@ public class CompanyModel {
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<TemperatureLogModel> temperatureLogModels;
+    private List<TemperatureLogModel> temperatureLogs;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

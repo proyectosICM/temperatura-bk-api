@@ -27,7 +27,7 @@ public class TemperatureLogModel {
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
-    private CompanyModel companyModel;
+    private CompanyModel company;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
