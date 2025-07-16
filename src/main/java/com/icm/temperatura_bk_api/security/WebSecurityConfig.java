@@ -77,7 +77,7 @@ public class WebSecurityConfig {
                     auth.requestMatchers("/login").permitAll();
                     auth.requestMatchers("/api/v1/companies/**").permitAll();
                     auth.requestMatchers("/api/v1/observations/**").permitAll();
-                    auth.requestMatchers("/api/v1/platform/**").permitAll();
+                    auth.requestMatchers("/api/v1/platforms/**").permitAll();
                     auth.requestMatchers("/api/v1/temperature-logs/**").permitAll();
                     auth.requestMatchers("/api/v1/users/**").permitAll();
                     auth.requestMatchers("/api/fuel-efficiency/download-excel/**").permitAll();

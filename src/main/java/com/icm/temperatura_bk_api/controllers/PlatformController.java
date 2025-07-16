@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/platform")
+@RequestMapping("/api/v1/platforms")
 @RequiredArgsConstructor
 public class PlatformController {
     private PlatformService platformService;
