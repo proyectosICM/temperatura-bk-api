@@ -3,6 +3,7 @@ package com.icm.temperatura_bk_api.services.impl;
 import com.icm.temperatura_bk_api.models.UserModel;
 import com.icm.temperatura_bk_api.repositories.UserRepository;
 import com.icm.temperatura_bk_api.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,5 +63,13 @@ public class UserServiceImpl implements UserService {
         }
         user.setId(id);
         return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException("Usuario con ID " + id + " no encontrado.");
+        }
+        userRepository.deleteById(id);
     }
 }

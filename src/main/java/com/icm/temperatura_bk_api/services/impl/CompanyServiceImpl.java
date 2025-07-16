@@ -3,6 +3,7 @@ package com.icm.temperatura_bk_api.services.impl;
 import com.icm.temperatura_bk_api.models.CompanyModel;
 import com.icm.temperatura_bk_api.repositories.CompanyRepository;
 import com.icm.temperatura_bk_api.services.CompanyService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,5 +45,13 @@ public class CompanyServiceImpl implements CompanyService {
                     return companyRepository.save(existingCompany);
                 })
                 .orElse(null);
+    }
+
+    @Override
+    public void deleteCompany(Long id) {
+        if (!companyRepository.existsById(id)) {
+            throw new EntityNotFoundException("Empresa con ID " + id + " no encontrada.");
+        }
+        companyRepository.deleteById(id);
     }
 }

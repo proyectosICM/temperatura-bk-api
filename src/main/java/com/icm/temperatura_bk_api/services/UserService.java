@@ -16,4 +16,5 @@ public interface UserService {
     Page<UserModel> getUsersByCompanyId(Long companyId, Pageable pageable);
     UserModel createUser(UserModel user);
     UserModel updateUser(Long id, UserModel user);
+    void deleteUser(Long id);
 }

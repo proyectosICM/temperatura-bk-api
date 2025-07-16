@@ -13,4 +13,5 @@ public interface CompanyService {
     Optional<CompanyModel> getCompanyById(Long id);
     CompanyModel createCompany(CompanyModel company);
     CompanyModel updateCompany(Long id, CompanyModel company);
+    void deleteCompany(Long id);
 }
