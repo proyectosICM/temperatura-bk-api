@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
+    Optional<UserModel> findByUsername(String username);
     Optional<UserModel> getUserById(Long id);
     List<UserModel> getAllUsers();
     Page<UserModel> getAllUsersPaginated(Pageable pageable);

@@ -17,6 +17,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public Optional<UserModel> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     @Override
     public Optional<UserModel> getUserById(Long id) {
         return userRepository.findById(id);
