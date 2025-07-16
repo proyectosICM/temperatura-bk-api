@@ -18,6 +18,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+
     @GetMapping("/{id}")
     public ResponseEntity<UserModel> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
