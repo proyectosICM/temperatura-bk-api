@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/platforms")
 @RequiredArgsConstructor
 public class PlatformController {
-    private PlatformService platformService;
+    private final PlatformService platformService;
 
     @GetMapping("/{id}")
     public ResponseEntity<PlatformModel> getLaneById(@PathVariable Long id) {
