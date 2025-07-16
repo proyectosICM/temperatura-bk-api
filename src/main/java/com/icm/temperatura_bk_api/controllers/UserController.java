@@ -18,7 +18,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/username/{username}")
+    @GetMapping("/by-username/{username}")
     public ResponseEntity<UserModel> getByUsername(@PathVariable String username) {
         return userService.findByUsername(username)
                 .map(ResponseEntity::ok)
