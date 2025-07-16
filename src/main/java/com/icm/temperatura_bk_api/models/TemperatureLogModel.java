@@ -25,6 +25,10 @@ public class TemperatureLogModel {
     @JoinColumn(name = "platform_id", nullable = false)
     private PlatformModel platform;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private CompanyModel companyModel;
+
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private ZonedDateTime createdAt;

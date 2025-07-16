@@ -11,6 +11,8 @@ public interface TemperatureLogService {
     Optional<TemperatureLogModel> findById(Long id);
     List<TemperatureLogModel> findByPlatformId(Long platformId);
     Page<TemperatureLogModel> findByPlatformId(Long platformId, Pageable pageable);
+    List<TemperatureLogModel> findByCompanyId(Long companyId);
+    Page<TemperatureLogModel> findByCompanyId(Long companyId, Pageable pageable);
     TemperatureLogModel save(TemperatureLogModel log);
     void deleteById(Long id);
 }

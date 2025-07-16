@@ -35,6 +35,10 @@ public class CompanyModel {
     @JsonIgnore
     private List<ObservationModel> observations;
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<TemperatureLogModel> temperatureLogModels;
+
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private ZonedDateTime createdAt;

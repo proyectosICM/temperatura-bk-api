@@ -12,4 +12,6 @@ import java.util.List;
 public interface TemperatureLogRepository extends JpaRepository<TemperatureLogModel, Long> {
     List<TemperatureLogModel> findByPlatformId(Long platformId);
     Page<TemperatureLogModel> findByPlatformId(Long platformId, Pageable pageable);
+    List<TemperatureLogModel> findByPlatformCompanyId(Long companyId);
+    Page<TemperatureLogModel> findByPlatformCompanyId(Long companyId, Pageable pageable);
 }

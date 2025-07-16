@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class TemperatureLogServiceImpl implements TemperatureLogService {
-    private TemperatureLogRepository temperatureLogRepository;
+    private final TemperatureLogRepository temperatureLogRepository;
 
     @Override
     public Optional<TemperatureLogModel> findById(Long id) {
@@ -29,6 +29,16 @@ public class TemperatureLogServiceImpl implements TemperatureLogService {
     @Override
     public Page<TemperatureLogModel> findByPlatformId(Long platformId, Pageable pageable) {
         return temperatureLogRepository.findByPlatformId(platformId, pageable);
+    }
+
+    @Override
+    public List<TemperatureLogModel> findByCompanyId(Long companyId) {
+        return temperatureLogRepository.findByPlatformCompanyId(companyId);
+    }
+
+    @Override
+    public Page<TemperatureLogModel> findByCompanyId(Long companyId, Pageable pageable) {
+        return temperatureLogRepository.findByPlatformCompanyId(companyId, pageable);
     }
 
     @Override

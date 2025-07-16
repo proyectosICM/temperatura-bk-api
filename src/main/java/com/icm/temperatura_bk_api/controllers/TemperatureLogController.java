@@ -41,6 +41,20 @@ public class TemperatureLogController {
         return ResponseEntity.ok(logs);
     }
 
+    @GetMapping("/by-company/{companyId}")
+    public ResponseEntity<List<TemperatureLogModel>> getByCompany(@PathVariable Long companyId) {
+        return ResponseEntity.ok(temperatureLogService.findByCompanyId(companyId));
+    }
+
+    @GetMapping("/by-company-paginated/{companyId}")
+    public ResponseEntity<Page<TemperatureLogModel>> getByCompanyPaginated(
+            @PathVariable Long companyId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(temperatureLogService.findByCompanyId(companyId, pageable));
+    }
+
     @PostMapping
     public ResponseEntity<TemperatureLogModel> create(@RequestBody TemperatureLogModel log) {
         TemperatureLogModel saved = temperatureLogService.save(log);
