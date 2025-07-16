@@ -1,6 +1,5 @@
 package com.icm.temperatura_bk_api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,33 +8,28 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "platform")
-public class PlatformModel {
+public class ObservationModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
-
-    private String sensorId;
-
     private Double temperature;
 
-    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<ObservationModel> observations;
+    private String description;
 
-    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<TemperatureLogModel> temperatureLogs;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private UserModel user;
+
+    @ManyToOne
+    @JoinColumn(name = "platform_id", nullable = false)
+    private PlatformModel platform;
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)

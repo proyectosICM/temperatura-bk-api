@@ -27,8 +27,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserModel> getAllUsersPaginated(int page, int size) {
-        Pageable pageable = Pageable.ofSize(size).withPage(page);
+    public Page<UserModel> getAllUsersPaginated(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
@@ -38,8 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserModel> getUsersByCompanyId(Long companyId, int page, int size) {
-        Pageable pageable = Pageable.ofSize(size).withPage(page);
+    public Page<UserModel> getUsersByCompanyId(Long companyId, Pageable pageable) {
         return userRepository.findByCompanyId(companyId, pageable);
     }
 

@@ -3,6 +3,7 @@ package com.icm.temperatura_bk_api.services.impl;
 import com.icm.temperatura_bk_api.models.PlatformModel;
 import com.icm.temperatura_bk_api.repositories.PlatformRepository;
 import com.icm.temperatura_bk_api.services.PlatformService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,5 +57,12 @@ public class PlatformServiceImpl implements PlatformService {
                     return platformRepository.save(existingLane);
                 })
                 .orElse(null);
+    }
+
+    @Override
+    public void deleteLane(Long id) {
+        PlatformModel lane = platformRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Lane not found with id: " + id));
+        platformRepository.delete(lane);
     }
 }

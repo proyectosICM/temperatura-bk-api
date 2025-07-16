@@ -2,6 +2,7 @@ package com.icm.temperatura_bk_api.controllers;
 
 import com.icm.temperatura_bk_api.models.PlatformModel;
 import com.icm.temperatura_bk_api.services.PlatformService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/lane")
+@RequestMapping("/api/v1/platform")
 @RequiredArgsConstructor
 public class PlatformController {
     private PlatformService platformService;
@@ -31,7 +32,7 @@ public class PlatformController {
 
     @GetMapping("/paginated")
     public ResponseEntity<Page<PlatformModel>> getAllLanesPaginated(@RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "10") int size) {
+                                                                    @RequestParam(defaultValue = "10") int size) {
         Page<PlatformModel> platforms = platformService.getAllLanesPaginated(page, size);
         if (platforms.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -73,5 +74,15 @@ public class PlatformController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLane(@PathVariable Long id) {
+        try {
+            platformService.deleteLane(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

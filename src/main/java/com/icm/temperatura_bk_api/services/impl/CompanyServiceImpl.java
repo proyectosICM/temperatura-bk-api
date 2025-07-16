@@ -27,10 +27,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Page<CompanyModel> getAllCompaniesPaginated(int page, int size) {
-        Pageable pageable = Pageable.ofSize(size).withPage(page);
+    public Page<CompanyModel> getAllCompaniesPaginated(Pageable pageable) {
         return companyRepository.findAll(pageable);
     }
+
     @Override
     public CompanyModel createCompany(CompanyModel company) {
         return companyRepository.save(company);

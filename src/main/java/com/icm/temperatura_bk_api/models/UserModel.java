@@ -1,5 +1,6 @@
 package com.icm.temperatura_bk_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.icm.temperatura_bk_api.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -27,6 +29,9 @@ public class UserModel {
     private String email;
 
     @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -34,6 +39,10 @@ public class UserModel {
     private Role role;
 
     private Boolean active = true;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ObservationModel> observations;
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)

@@ -14,4 +14,5 @@ public interface PlatformService {
     Page<PlatformModel> getByCompanyPaginated(Long companyId, int page, int size);
     PlatformModel createLane(PlatformModel lane);
     PlatformModel updateLane(Long id, PlatformModel lane);
+    void deleteLane(Long id);
 }

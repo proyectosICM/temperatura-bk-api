@@ -4,6 +4,8 @@ import com.icm.temperatura_bk_api.services.CompanyService;
 import com.icm.temperatura_bk_api.models.CompanyModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +14,16 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/company")
+@RequestMapping("/api/v1/companies")
 public class CompanyController {
-    public final CompanyService companyService;
+    private final CompanyService companyService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyModel> getCompanyById(@PathVariable Long id) {
+        return companyService.getCompanyById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @GetMapping
     public ResponseEntity<List<CompanyModel>> getAllCompanies() {
@@ -26,15 +35,9 @@ public class CompanyController {
     public ResponseEntity<Page<CompanyModel>> getAllCompaniesPaginated(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<CompanyModel> companies = companyService.getAllCompaniesPaginated(page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CompanyModel> companies = companyService.getAllCompaniesPaginated(pageable);
         return ResponseEntity.ok(companies);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<CompanyModel> getCompanyById(@RequestParam Long id) {
-        return companyService.getCompanyById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
