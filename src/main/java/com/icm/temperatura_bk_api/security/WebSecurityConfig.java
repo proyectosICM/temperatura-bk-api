@@ -79,7 +79,6 @@ public class WebSecurityConfig {
                     auth.requestMatchers("/api/v1/observations/**").permitAll();
                     auth.requestMatchers("/api/v1/platforms/**").permitAll();
                     auth.requestMatchers("/api/v1/temperature-logs/**").permitAll();
-                    auth.requestMatchers("/api/v1/users/**").permitAll();
                     auth.requestMatchers("/api/fuel-efficiency/download-excel/**").permitAll();
                     // .hasRole("ADMINISTRATOR");
                     auth.requestMatchers("/swagger-ui/**").permitAll();
