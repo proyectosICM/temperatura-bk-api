@@ -1,6 +1,7 @@
 package com.icm.temperatura_bk_api.controllers;
 
 import com.icm.temperatura_bk_api.dtos.UserDTO;
+import com.icm.temperatura_bk_api.enums.Role;
 import com.icm.temperatura_bk_api.mappers.UserMapper;
 import com.icm.temperatura_bk_api.models.UserModel;
 import com.icm.temperatura_bk_api.services.UserService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -19,6 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    @GetMapping("/roles")
+    public List<String> getRoles() {
+        return Arrays.stream(Role.values())
+                .map(Enum::name)
+                .toList();
+    }
 
     @GetMapping("/by-username/{username}")
     public ResponseEntity<UserModel> getByUsername(@PathVariable String username) {
