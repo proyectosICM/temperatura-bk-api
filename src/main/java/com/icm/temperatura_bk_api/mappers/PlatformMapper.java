@@ -31,7 +31,6 @@ public class PlatformMapper {
     public static void updateEntityFromDTO(PlatformDTO dto, PlatformModel entity, CompanyModel company) {
         entity.setName(dto.getName());
         entity.setSensorId(dto.getSensorId());
-        entity.setTemperature(dto.getTemperature());
         entity.setCompany(company);
     }
 }
