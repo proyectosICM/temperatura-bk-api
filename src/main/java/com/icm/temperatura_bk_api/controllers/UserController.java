@@ -1,5 +1,7 @@
 package com.icm.temperatura_bk_api.controllers;
 
+import com.icm.temperatura_bk_api.dtos.UserDTO;
+import com.icm.temperatura_bk_api.mappers.UserMapper;
 import com.icm.temperatura_bk_api.models.UserModel;
 import com.icm.temperatura_bk_api.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -74,18 +76,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserModel> createUser(@RequestBody UserModel user) {
-        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO dto) {
+        UserModel saved = userService.createUser(dto);
+        return new ResponseEntity<>(UserMapper.toDTO(saved), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserModel> updateUser(@PathVariable Long id,
-                                @RequestBody UserModel user) {
-        UserModel updated =  userService.updateUser(id, user);
-        if (updated == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO dto) {
+        UserModel updated = userService.updateUser(id, dto);
+        return ResponseEntity.ok(UserMapper.toDTO(updated));
     }
 
     @DeleteMapping("/{id}")

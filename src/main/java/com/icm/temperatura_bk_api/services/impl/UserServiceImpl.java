@@ -1,6 +1,10 @@
 package com.icm.temperatura_bk_api.services.impl;
 
+import com.icm.temperatura_bk_api.dtos.UserDTO;
+import com.icm.temperatura_bk_api.mappers.UserMapper;
+import com.icm.temperatura_bk_api.models.CompanyModel;
 import com.icm.temperatura_bk_api.models.UserModel;
+import com.icm.temperatura_bk_api.repositories.CompanyRepository;
 import com.icm.temperatura_bk_api.repositories.UserRepository;
 import com.icm.temperatura_bk_api.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -49,20 +54,27 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByCompanyId(companyId, pageable);
     }
 
-    @Override
-    public UserModel createUser(UserModel user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
+    public UserModel createUser(UserDTO dto) {
+        CompanyModel company = companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada"));
+        UserModel user = UserMapper.toEntity(dto, company);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
-    @Override
-    public UserModel updateUser(Long id, UserModel user) {
-        if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found with id: " + id);
+    public UserModel updateUser(Long id, UserDTO dto) {
+        UserModel existing = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+
+        CompanyModel company = companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada"));
+
+        UserMapper.updateEntityFromDTO(dto, existing, company);
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            existing.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
-        user.setId(id);
-        return userRepository.save(user);
+
+        return userRepository.save(existing);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.icm.temperatura_bk_api.services;
 
+import com.icm.temperatura_bk_api.dtos.UserDTO;
 import com.icm.temperatura_bk_api.models.UserModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ public interface UserService {
     Page<UserModel> getAllUsersPaginated(Pageable pageable);
     List<UserModel> getUsersByCompanyId(Long companyId);
     Page<UserModel> getUsersByCompanyId(Long companyId, Pageable pageable);
-    UserModel createUser(UserModel user);
-    UserModel updateUser(Long id, UserModel user);
+    UserModel createUser(UserDTO dto);
+    UserModel updateUser(Long id, UserDTO dto);
     void deleteUser(Long id);
 }
