@@ -21,8 +21,8 @@ public class ObservationController {
     private final ObservationService observationService;
 
     @GetMapping("/count-today")
-    public ResponseEntity<Long> getTodayObservationCount() {
-        long count = observationService.countObservationsToday();
+    public ResponseEntity<Long> countTodayByCompany(@PathVariable Long companyId) {
+        Long count = observationService.countTodayObservationsByCompany(companyId);
         return ResponseEntity.ok(count);
     }
 

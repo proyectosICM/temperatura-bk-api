@@ -19,10 +19,8 @@ public class ObservationServiceImpl implements ObservationService {
     private final ObservationRepository observationRepository;
 
     @Override
-    public long countObservationsToday() {
-        ZonedDateTime startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
-        ZonedDateTime endOfDay = startOfDay.plusDays(1);
-        return observationRepository.countByCreatedAtBetween(startOfDay, endOfDay);
+    public Long countTodayObservationsByCompany(Long companyId) {
+        return observationRepository.countByCompanyIdAndToday(companyId);
     }
     @Override
     public Optional<ObservationModel> findById(Long id) {

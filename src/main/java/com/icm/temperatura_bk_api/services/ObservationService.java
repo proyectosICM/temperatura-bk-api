@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ObservationService {
-    long countObservationsToday();
+    Long countTodayObservationsByCompany(Long companyId);
     Optional<ObservationModel> findById(Long id);
     List<ObservationModel> findByCompanyId(Long companyId);
     Page<ObservationModel> findByCompanyId(Long companyId, Pageable pageable);
