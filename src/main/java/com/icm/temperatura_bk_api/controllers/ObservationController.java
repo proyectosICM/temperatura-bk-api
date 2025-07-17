@@ -64,4 +64,5 @@ public class ObservationController {
         observationService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }
