@@ -1,6 +1,10 @@
 package com.icm.temperatura_bk_api.services.impl;
 
+import com.icm.temperatura_bk_api.dtos.PlatformDTO;
+import com.icm.temperatura_bk_api.mappers.PlatformMapper;
+import com.icm.temperatura_bk_api.models.CompanyModel;
 import com.icm.temperatura_bk_api.models.PlatformModel;
+import com.icm.temperatura_bk_api.repositories.CompanyRepository;
 import com.icm.temperatura_bk_api.repositories.PlatformRepository;
 import com.icm.temperatura_bk_api.services.PlatformService;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PlatformServiceImpl implements PlatformService {
     private final PlatformRepository platformRepository;
+    private final CompanyRepository companyRepository;
 
     @Override
     public Optional<PlatformModel> getLaneById(Long id) {
@@ -45,18 +50,33 @@ public class PlatformServiceImpl implements PlatformService {
     }
 
     @Override
-    public PlatformModel createLane(PlatformModel lane) {
-        return platformRepository.save(lane);
+    public PlatformDTO createLane(PlatformDTO dto) {
+        CompanyModel company = companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("Empresa no encontrada"));
+
+        PlatformModel entity = PlatformMapper.toEntity(dto, company);
+        PlatformModel saved = platformRepository.save(entity);
+
+        return PlatformMapper.toDTO(saved);
     }
 
     @Override
-    public PlatformModel updateLane(Long id, PlatformModel lane) {
-        return platformRepository.findById(id)
-                .map(existingLane -> {
-                    existingLane.setName(lane.getName());
-                    return platformRepository.save(existingLane);
-                })
-                .orElse(null);
+    public PlatformDTO updateLane(Long id, PlatformDTO dto) {
+        PlatformModel existing = platformRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Platform not found"));
+
+        // Actualiza los campos
+        existing.setName(dto.getName());
+        existing.setSensorId(dto.getSensorId());
+        existing.setTemperature(dto.getTemperature());
+
+        CompanyModel company = companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("Company not found"));
+
+        existing.setCompany(company);
+
+        PlatformModel updated = platformRepository.save(existing);
+        return PlatformMapper.toDTO(updated);
     }
 
     @Override

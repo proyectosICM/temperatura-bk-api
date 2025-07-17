@@ -1,5 +1,6 @@
 package com.icm.temperatura_bk_api.controllers;
 
+import com.icm.temperatura_bk_api.dtos.PlatformDTO;
 import com.icm.temperatura_bk_api.models.PlatformModel;
 import com.icm.temperatura_bk_api.services.PlatformService;
 import jakarta.persistence.EntityNotFoundException;
@@ -62,20 +63,17 @@ public class PlatformController {
     }
 
     @PostMapping
-    public ResponseEntity<PlatformModel> createLane(@RequestBody PlatformModel lane) {
-        PlatformModel createdLane = platformService.createLane(lane);
-        return new ResponseEntity<>(createdLane, HttpStatus.CREATED);
+    public ResponseEntity<PlatformDTO> create(@RequestBody PlatformDTO dto) {
+        return ResponseEntity.ok(platformService.createLane(dto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PlatformModel> updateLane(
-            @PathVariable Long id,
-            @RequestBody PlatformModel lane) {
 
-        PlatformModel updated = platformService.updateLane(id, lane);
-        if (updated == null) {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<PlatformDTO> updatePlatform(
+            @PathVariable Long id,
+            @RequestBody PlatformDTO dto
+    ) {
+        PlatformDTO updated = platformService.updateLane(id, dto);
         return ResponseEntity.ok(updated);
     }
 
