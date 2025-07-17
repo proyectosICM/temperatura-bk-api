@@ -6,10 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Repository
 public interface ObservationRepository extends JpaRepository<ObservationModel, Long> {
     List<ObservationModel> findByCompanyId(Long companyId);
     Page<ObservationModel> findByCompanyId(Long companyId, Pageable pageable);
+    long countByCreatedAtBetween(ZonedDateTime start, ZonedDateTime end);
 }

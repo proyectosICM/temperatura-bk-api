@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,12 @@ import java.util.Optional;
 public class ObservationServiceImpl implements ObservationService {
     private final ObservationRepository observationRepository;
 
+    @Override
+    public long countObservationsToday() {
+        ZonedDateTime startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        ZonedDateTime endOfDay = startOfDay.plusDays(1);
+        return observationRepository.countByCreatedAtBetween(startOfDay, endOfDay);
+    }
     @Override
     public Optional<ObservationModel> findById(Long id) {
         return observationRepository.findById(id);

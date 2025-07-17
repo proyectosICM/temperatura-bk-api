@@ -20,6 +20,12 @@ public class ObservationController {
 
     private final ObservationService observationService;
 
+    @GetMapping("/count-today")
+    public ResponseEntity<Long> getTodayObservationCount() {
+        long count = observationService.countObservationsToday();
+        return ResponseEntity.ok(count);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ObservationModel> getById(@PathVariable Long id) {
         return observationService.findById(id)
