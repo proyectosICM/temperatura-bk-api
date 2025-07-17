@@ -14,6 +14,7 @@ import java.util.List;
 public interface ObservationRepository extends JpaRepository<ObservationModel, Long> {
     List<ObservationModel> findByCompanyId(Long companyId);
     Page<ObservationModel> findByCompanyId(Long companyId, Pageable pageable);
+    //Data
     @Query("SELECT COUNT(o) FROM ObservationModel o WHERE o.company.id = :companyId AND DATE(o.createdAt) = CURRENT_DATE")
     Long countByCompanyIdAndToday(Long companyId);
 }
