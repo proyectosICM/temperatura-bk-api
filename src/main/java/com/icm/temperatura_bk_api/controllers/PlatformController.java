@@ -1,6 +1,7 @@
 package com.icm.temperatura_bk_api.controllers;
 
 import com.icm.temperatura_bk_api.dtos.PlatformDTO;
+import com.icm.temperatura_bk_api.dtos.PlatformTemperatureDTO;
 import com.icm.temperatura_bk_api.models.PlatformModel;
 import com.icm.temperatura_bk_api.services.PlatformService;
 import jakarta.persistence.EntityNotFoundException;
@@ -75,6 +76,14 @@ public class PlatformController {
     ) {
         PlatformDTO updated = platformService.updateLane(id, dto);
         return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping("/temperature/{id}")
+    public PlatformTemperatureDTO updateTemperature(
+            @PathVariable Long id,
+            @RequestBody PlatformTemperatureDTO temperatureDTO
+    ) {
+        return platformService.updateTemperature(id, temperatureDTO.getTemperature());
     }
 
     @DeleteMapping("/{id}")

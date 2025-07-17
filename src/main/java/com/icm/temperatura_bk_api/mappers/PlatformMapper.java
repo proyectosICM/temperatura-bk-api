@@ -1,6 +1,7 @@
 package com.icm.temperatura_bk_api.mappers;
 
 import com.icm.temperatura_bk_api.dtos.PlatformDTO;
+import com.icm.temperatura_bk_api.dtos.PlatformTemperatureDTO;
 import com.icm.temperatura_bk_api.models.CompanyModel;
 import com.icm.temperatura_bk_api.models.PlatformModel;
 
@@ -14,6 +15,13 @@ public class PlatformMapper {
         dto.setSensorId(entity.getSensorId());
         dto.setTemperature(entity.getTemperature());
         dto.setCompanyId(entity.getCompany().getId());
+        return dto;
+    }
+
+    // De entidad a DTO parcial (sólo temperatura)
+    public static PlatformTemperatureDTO toTemperatureDTO(PlatformModel entity) {
+        PlatformTemperatureDTO dto = new PlatformTemperatureDTO();
+        dto.setTemperature(entity.getTemperature());
         return dto;
     }
 

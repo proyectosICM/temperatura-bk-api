@@ -1,6 +1,7 @@
 package com.icm.temperatura_bk_api.services.impl;
 
 import com.icm.temperatura_bk_api.dtos.PlatformDTO;
+import com.icm.temperatura_bk_api.dtos.PlatformTemperatureDTO;
 import com.icm.temperatura_bk_api.mappers.PlatformMapper;
 import com.icm.temperatura_bk_api.models.CompanyModel;
 import com.icm.temperatura_bk_api.models.PlatformModel;
@@ -76,6 +77,19 @@ public class PlatformServiceImpl implements PlatformService {
 
         PlatformModel updated = platformRepository.save(existing);
         return PlatformMapper.toDTO(updated);
+    }
+
+    @Override
+    public PlatformTemperatureDTO updateTemperature(Long id, Double temperature) {
+        Optional<PlatformModel> optionalPlatform = platformRepository.findById(id);
+        if (optionalPlatform.isEmpty()) {
+            throw new RuntimeException("Plataforma no encontrada");
+        }
+
+        PlatformModel platform = optionalPlatform.get();
+        platform.setTemperature(temperature);
+        PlatformModel updated = platformRepository.save(platform);
+        return PlatformMapper.toTemperatureDTO(updated); // Uso del nuevo método
     }
 
     @Override

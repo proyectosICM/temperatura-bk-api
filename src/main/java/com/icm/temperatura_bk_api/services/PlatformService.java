@@ -1,6 +1,7 @@
 package com.icm.temperatura_bk_api.services;
 
 import com.icm.temperatura_bk_api.dtos.PlatformDTO;
+import com.icm.temperatura_bk_api.dtos.PlatformTemperatureDTO;
 import com.icm.temperatura_bk_api.models.PlatformModel;
 import org.springframework.data.domain.Page;
 
@@ -15,5 +16,6 @@ public interface PlatformService {
     Page<PlatformModel> getByCompanyPaginated(Long companyId, int page, int size);
     PlatformDTO createLane(PlatformDTO dto);
     PlatformDTO updateLane(Long id, PlatformDTO dto);
+    PlatformTemperatureDTO updateTemperature(Long id, Double temperature);
     void deleteLane(Long id);
 }
