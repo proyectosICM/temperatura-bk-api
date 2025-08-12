@@ -5,6 +5,7 @@ import com.icm.temperatura_bk_api.dtos.PlatformTemperatureDTO;
 import com.icm.temperatura_bk_api.mappers.PlatformMapper;
 import com.icm.temperatura_bk_api.models.CompanyModel;
 import com.icm.temperatura_bk_api.models.PlatformModel;
+import com.icm.temperatura_bk_api.models.TemperatureLogModel;
 import com.icm.temperatura_bk_api.repositories.CompanyRepository;
 import com.icm.temperatura_bk_api.repositories.PlatformRepository;
 import com.icm.temperatura_bk_api.services.PlatformService;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class PlatformServiceImpl implements PlatformService {
     private final PlatformRepository platformRepository;
     private final CompanyRepository companyRepository;
+    private final TemperatureLogServiceImpl temperatureLogService;
 
     @Override
     public Optional<PlatformModel> getLaneById(Long id) {
@@ -89,7 +91,14 @@ public class PlatformServiceImpl implements PlatformService {
         PlatformModel platform = optionalPlatform.get();
         platform.setTemperature(temperature);
         PlatformModel updated = platformRepository.save(platform);
-        return PlatformMapper.toTemperatureDTO(updated); // Uso del nuevo método
+
+        TemperatureLogModel log = new TemperatureLogModel();
+        log.setTemperature(temperature);
+        log.setPlatform(platform);
+        log.setCompany(platform.getCompany());
+        temperatureLogService.save(log);
+
+        return PlatformMapper.toTemperatureDTO(updated);
     }
 
     @Override
