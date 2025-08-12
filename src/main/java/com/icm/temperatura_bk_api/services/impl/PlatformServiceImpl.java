@@ -75,7 +75,8 @@ public class PlatformServiceImpl implements PlatformService {
         // Actualiza los campos
         existing.setName(dto.getName());
         existing.setSensorId(dto.getSensorId());
-
+        existing.setMinTemperature(dto.getMinTemperature());
+        existing.setMaxTemperature(dto.getMaxTemperature());
         CompanyModel company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new RuntimeException("Company not found"));
 

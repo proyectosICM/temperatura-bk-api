@@ -8,5 +8,7 @@ public class PlatformDTO {
     private String name;
     private String sensorId;
     private Double temperature;
+    private Double minTemperature;
+    private Double maxTemperature;
     private Long companyId;
 }
