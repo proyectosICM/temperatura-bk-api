@@ -29,6 +29,12 @@ public class PlatformModel {
 
     private Double temperature;
 
+    //@Column(nullable = false)
+    private Double minTemperature;
+
+    //@Column(nullable = false)
+    private Double maxTemperature;
+
     @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<ObservationModel> observations;
