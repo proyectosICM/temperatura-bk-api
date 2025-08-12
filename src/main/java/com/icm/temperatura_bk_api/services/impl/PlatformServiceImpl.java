@@ -105,42 +105,21 @@ public class PlatformServiceImpl implements PlatformService {
         log.setCompany(platform.getCompany());
         temperatureLogService.save(log);
 
-        boolean fueraDeRango = temperature < platform.getMinTemperature() || temperature > platform.getMaxTemperature();
+        boolean fueraDeRango = temperature < platform.getMinTemperature()
+                || temperature > platform.getMaxTemperature();
 
         if (fueraDeRango) {
-            // Última observación para ESTE andén
-            Optional<ObservationModel> ultimaObsOpt = observationRepository.findLastByPlatformId(platform.getId());
-
-            boolean crearNueva = true;
-            if (ultimaObsOpt.isPresent()) {
-                ObservationModel ultimaObs = ultimaObsOpt.get();
-
-                // Verificar si fue fuera de rango
-                boolean ultimaFueraDeRango = ultimaObs.getTemperature() < platform.getMinTemperature()
-                        || ultimaObs.getTemperature() > platform.getMaxTemperature();
-
-                // Verificar si fue dentro de los últimos 10 segundos
-                LocalDateTime ahora = LocalDateTime.now();
-                if (ultimaFueraDeRango && ultimaObs.getCreatedAt() != null &&
-                        Duration.between(ultimaObs.getCreatedAt(), ahora).getSeconds() <= 10) {
-                    crearNueva = false;
-                }
-            }
-
-            if (crearNueva) {
-                ObservationModel obs = new ObservationModel();
-                obs.setTemperature(temperature);
-                obs.setDescription(String.format(
-                        "Temperatura fuera de rango (%.1f - %.1f): valor actual %.1f°C",
-                        platform.getMinTemperature(), platform.getMaxTemperature(), temperature
-                ));
-                obs.setPlatform(platform);
-                obs.setCompany(platform.getCompany());
-                obs.setUser(null);
-                observationService.save(obs);
-            }
+            ObservationModel obs = new ObservationModel();
+            obs.setTemperature(temperature);
+            obs.setDescription(String.format(
+                    "Temperatura fuera de rango (%.1f - %.1f): valor actual %.1f°C",
+                    platform.getMinTemperature(), platform.getMaxTemperature(), temperature
+            ));
+            obs.setPlatform(platform);
+            obs.setCompany(platform.getCompany());
+            obs.setUser(null); // Automático, sin usuario
+            observationService.save(obs);
         }
-
 
         return PlatformMapper.toTemperatureDTO(updated);
     }
