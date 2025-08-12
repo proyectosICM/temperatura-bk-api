@@ -60,7 +60,7 @@ public class WebSecurityConfig {
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
-        HeaderWriter headerWriter = new StaticHeadersWriter("Access-Control-Allow-Origin", "http://telemetriaperu.com:3004", "http://localhost:3004", "http://samloto.com:3004", F "http://192.168.1.232:3004");
+        HeaderWriter headerWriter = new StaticHeadersWriter("Access-Control-Allow-Origin", "http://telemetriaperu.com:3004", "http://localhost:3004", "http://samloto.com:3004", "http://192.168.1.232:3004");
 
         return httpSecurity
                 .cors()
