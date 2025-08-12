@@ -17,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,22 +105,24 @@ public class PlatformServiceImpl implements PlatformService {
         log.setCompany(platform.getCompany());
         temperatureLogService.save(log);
 
-        boolean ahoraFueraDeRango = temperature < platform.getMinTemperature() || temperature > platform.getMaxTemperature();
+        boolean fueraDeRango = temperature < platform.getMinTemperature() || temperature > platform.getMaxTemperature();
 
-        // Solo crear observación si hay transición a fuera de rango
-        if (ahoraFueraDeRango) {
-            // Consultar última observación
+        if (fueraDeRango) {
+            // Última observación para ESTE andén
             Optional<ObservationModel> ultimaObsOpt = observationRepository.findLastByPlatformId(platform.getId());
 
             boolean crearNueva = true;
             if (ultimaObsOpt.isPresent()) {
                 ObservationModel ultimaObs = ultimaObsOpt.get();
-                // Evitar duplicar si la última también fue fuera de rango
-                boolean ultimaFueraDeRango =
-                        ultimaObs.getTemperature() < platform.getMinTemperature() ||
-                                ultimaObs.getTemperature() > platform.getMaxTemperature();
 
-                if (ultimaFueraDeRango) {
+                // Verificar si fue fuera de rango
+                boolean ultimaFueraDeRango = ultimaObs.getTemperature() < platform.getMinTemperature()
+                        || ultimaObs.getTemperature() > platform.getMaxTemperature();
+
+                // Verificar si fue dentro de los últimos 10 segundos
+                LocalDateTime ahora = LocalDateTime.now();
+                if (ultimaFueraDeRango && ultimaObs.getCreatedAt() != null &&
+                        Duration.between(ultimaObs.getCreatedAt(), ahora).getSeconds() <= 10) {
                     crearNueva = false;
                 }
             }
